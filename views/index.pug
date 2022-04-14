@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    div(class='text-center')
+        p(class='saira-stencil-one-big') THE CARD ROOM
+
+    script(src='/javascripts/set_background.js')
+
+    div(class='row')
+        div(class='tcr-card-main')
+            div(class='card tcr-card card-group bg-transparent px-2 py-2')
+                img(src='/images/Mutation-AcidRain-card.png' id='img1' class='card-img-top zoom' alt='Acid Rain')
+            div(class='card tcr-card card-group bg-transparent px-2 py-2')
+                img(src='/images/Mutation-MicroDosing-card.png' id='img2' class='card-img-top zoom' alt='Micro Dosing')
+            div(class='card tcr-card card-group bg-transparent px-2 py-2')
+                img(src='/images/Mutation-ChinSwingers-card.png' id='img3' class='card-img-top zoom' alt='Chin Swingers')
+            div(class='card tcr-card card-group bg-transparent px-2 py-2')
+                img(src='/images/Mutation-TheHulk-card.png' id='img4' class='card-img-top zoom' alt='The Hulk')
+
+    script(src='/javascripts/update_images.js')

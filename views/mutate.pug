@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    h2 MUTATE
+    div(class="container-fluid py-2")
+        div(class='row align-items-start justify-content-evenly')
+            div(class='col align-self-start px-0')
+                p 
+                    | Before beginning, please read the 
+                    a(href='/mutate_faq') Mutate FAQ
+                    | .
+            div(class='col align-self-end text-end')
+                button(type='button' class='btn btn-primary' id='button-wallet-connect' onclick='this.value=\'testing...\';connect_to_wallet(this)') Connect to Nami
+        div(class='row align-items-start justify-content-evenly')
+            div(class='col align-self-start px-0')
+                form(method='POST' action='')
+                    div(class='form-group py-1')
+                        select(class='form-select' name='normie_asset_id' id='normie-select')
+                            option(value='') Select a Normie
+                    div(class='form-group py-1')
+                        select(class='form-select' name='mutation_asset_id' id='mutation-select')
+                            option(value='') Select a Mutation
+                    input(type='hidden' name='from' value='' id='from')
+                    div(class='form-group py-1')
+                        button(type='submit' class='btn btn-primary' id='submit-button' disabled) Mutate!
+            div(class='col align-self-end text-end')
+                p

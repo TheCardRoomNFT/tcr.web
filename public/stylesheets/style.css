@@ -1,0 +1,210 @@
+
+html, body {
+  height: 100%;
+}
+
+/*
+ * CSS to change fonts
+ */
+body {
+  font: 1.05em "Courier New", Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Helvetica', Arial, sans-serif;
+  color: #01FCD3;
+}
+
+p {
+  font: 1.05em "Courier New", Helvetica, Arial, sans-serif;
+  color: white;
+}
+
+/*
+ * CSS to change links
+ */
+ a:link, a:visited {
+  color: #01FCD3;
+  text-decoration: none;
+}
+
+a:hover, a:active {
+  color: #00c4a3;
+  text-decoration: none;
+}
+
+/*
+ * CSS to change backgrounds
+ */
+.background-concrete {
+  background-image: url(/images/background_concrete.jpg);
+  background-repeat: repeat-y;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.background-hacker {
+  /*background-image: url(/images/ai_genome_process.jpg);*/
+  background-image: url(/images/hacker_warehouse.jpg);
+  background-repeat: repeat-y;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.background-black {
+  background-color: black;
+}
+
+/*
+ * CSS mostly for debugging to show borders around an element.
+ */
+.border-show {
+  border-style: solid;
+  border-color: white;
+}
+
+/*
+ * CSS to pad the top of the main section so the navbar does not cover it up.
+ */
+main > .container {
+  padding-top: 80px;
+}
+main > .container-fluid {
+  padding-top: 80px;
+}
+
+/*
+ * CSS to move anchors up so the part that should be shown is not covered by
+ * the navbar.
+ */
+a.anchor-offset {
+  display: block;
+  position: relative;
+  top: -80px;
+  visibility: hidden;
+}
+
+/*
+ * CSS to change the hamburger menu to TCR green color.
+ */
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(1,252,211, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.custom-toggler.navbar-toggler {
+  border-color: #01FCD3;
+} 
+
+/*
+ * CSS to make the drop down menu items open automatically on mouse hover.  
+ * Only in desktop medium view or larger.  Smaller than this and the 
+ * hamburger icon is used.
+ */
+@media all and (min-width: 768px) {
+	.navbar .dropdown-menu-end{ right:0; left: auto;  }
+	.navbar .nav-item .dropdown-menu{  display:block; opacity: 0;  visibility: hidden; transition:.3s; margin-top:0;  }
+	.navbar .dropdown-menu.fade-down{ top:80%; transform: rotateX(-75deg); transform-origin: 0% 0%; }
+	.navbar .dropdown-menu.fade-up{ top:180%;  }
+	.navbar .nav-item:hover .dropdown-menu{  transition: .3s; opacity:1; visibility:visible; top:100%; transform: rotateX(0deg); }
+
+	.navbar .nav-item:link .nav-link{ color: #01FCD3; }
+	.navbar .nav-item:visited .nav-link{ color: #01FCD3;  }
+	.navbar .nav-item:hover .nav-link{ color: #00c4a3;  }
+	.navbar .nav-item:active .nav-link{ color: #00c4a3;  }
+
+  .navbar .dropdown-item:link{ color: #01FCD3; }
+  .navbar .dropdown-item:visited{ color: #01FCD3; }
+  .navbar .dropdown-item:hover{ color: #00c4a3; }
+  .navbar .dropdown-item:active{ color: #00c4a3; }
+
+  .navbar .nav-item:hover .dropdown-item{ background-color: #000000; }
+  .navbar .nav-item .dropdown-menu { background-color: #000000; }
+}
+
+/*
+ * CSS for displaying and managing card layouts
+ */
+ .tcr-card-main {
+  --bs-gutter-x: 2rem;
+  --bs-gutter-y: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.match-height > [class*='col'] {
+  display: flex;
+  flex-flow: column;
+}
+
+.match-height > [class*='col'] > .card {
+  flex: 1 1 auto;
+}
+
+.tcr-card {
+  width: 200px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.zoom {
+  transition: transform .15s;
+}
+
+.zoom:hover {
+  transform: scale(1.05);
+}
+
+.saira-stencil-one-big {
+  color:  #01FCD3;
+  font-family: 'Saira Stencil One', serif;
+  font-size: 4.4em;
+  text-shadow: 3px 3px 3px #00c4a3;
+  opacity: 1.0;
+}
+
+.navbar-font {
+  font: 1.125em "Courier New", Helvetica, Arial, sans-serif;
+  color: white;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color:  #01FCD3;
+}
+
+/*
+ * CSS to change primary buttons
+ */
+ /*
+ .btn-primary {
+  color: #000000;
+  background-color:#01FCD3;
+  border-color: #00c4a3;
+}
+.btn-primary:hover {
+  color: #000000;
+  background-color: #00c4a3;
+  border-color: #00c4a3;
+}
+.btn-check:focus + .btn-primary, .btn-primary:focus {
+  color: #000000;
+  background-color: #01FCD3;
+  border-color: #01FCD3;
+  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+}
+.btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
+  color: #000000;
+  background-color: #01FCD3;
+  border-color: #01FCD3;
+}
+.btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+}
+.btn-primary:disabled, .btn-primary.disabled {
+  color: #000000;
+  background-color: #01FCD3;
+  border-color: #01FCD3;
+}
+*/
+

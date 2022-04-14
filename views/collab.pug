@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    div(class="container-fluid")
+        div(class='row align-items-start justify-content-evenly')
+            div(class='col align-self-start px-0')
+                h2 COLLAB
+                p
+                    | This is more than just about us; we are looking to build a community of players, 
+                    | artists, NFT junkies and gaming degenerates, who will work together to build a 
+                    | space dedicated to excellence and originality.
+                p
+                    | If you are interested in this concept, then please get in touch and let’s see 
+                    | where we can take this idea together.
+            div(class='col align-self-start')
+                h4(class='pt-2') Request Form:
+                form(method='POST' action='')
+                    div(class='form-group py-1')
+                        input(class="form-control background-black" style='color: white; background: black;' type='text', placeholder='Your name*' name='name' required autofocus)
+                    div(class='form-group py-1')
+                        input(class="form-control background-black" style='color: white; background: black;' type='email', placeholder='Your email address*' name='email' required)
+                    div(class='form-group py-1')
+                        input(class="form-control background-black" style='color: white; background: black;' type='text', placeholder='Subject*' name='subject' required)
+                    div(class='form-group py-1')
+                        textarea(class="form-control background-black" style='color: white; background: black;' rows='7' placeholder='Message*' name='message' required)
+                    div(class='form-group py-1')
+                        button(type='submit' class='btn btn-primary' id='submit-button') Send

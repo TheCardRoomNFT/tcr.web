@@ -1,0 +1,74 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        meta(name='description' content='')
+        meta(name='author' content='The Card Room')
+        title= title
+        link(rel='stylesheet' href='/bootstrap/css/bootstrap.min.css')
+        link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Saira+Stencil+One')
+
+    body(class="d-flex flex-column background-concrete px-5"  id='body' onload="check_wallet_connection(document.getElementById(\'button-wallet-connect\'))")
+        header
+            nav(class='navbar navbar-expand-md navbar-dark fixed-top background-concrete px-5 navbar-font' id='navbar1')
+                div(class='container-fluid background-concrete' id='navbar2')
+                    a(class='navbar-brand' href='/')
+                        img(src='/images/header_tcr_logo.png' height='50px')
+                    button(class='navbar-toggler custom-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#main_nav' aria-expanded='false' aria-label='Toggle Nav')
+                        span(class='navbar-toggler-icon')
+                    div(class='collapse navbar-collapse' id='main_nav')
+                        ul(class='navbar-nav ms-auto')
+                            li(class='nav-item')
+                                a(class='nav-link' href='/mutate') Mutate
+                            li(class='nav-item')
+                                a(class='nav-link' href='/community') Community
+                            li(class='nav-item')
+                                a(class='nav-link' href='/mint') Mint
+                            li(class='nav-item dropdown')
+                                a(class='nav-link dropdown-toggle' href='/nft' data-bs-toggle='dropdown') NFT
+                                ul(class="dropdown-menu fade-down")
+                                    li 
+                                        a(class="dropdown-item" href="/nft/kingcharles") S1 - King Charles
+                                    li 
+                                        a(class="dropdown-item" href="/nft/mutation") S2 - Mutation
+                                    li 
+                                        a(class="dropdown-item" href="/nft/mutants") S3 - Mutants
+                            li(class="nav-item dropdown")
+                                a(class="nav-link dropdown-toggle" href="/about" data-bs-toggle="dropdown") About
+                                ul(class="dropdown-menu dropdown-menu-end fade-down")
+                                    li 
+                                        a(class="dropdown-item" href="/about/#TheCardRoom") The Card Room
+                                    li 
+                                        a(class="dropdown-item" href="/about/#verify") Verify
+                                    li 
+                                        a(class="dropdown-item" href="/about/#roadmap") Roadmap
+                                    li 
+                                        a(class="dropdown-item" href="/about/#team") Team
+                            li(class='nav-item')
+                                a(class='nav-link' href='/collab') Collab
+
+        main(class='flex-shrink-0')
+            div(class='container-fluid')
+                block content
+
+        footer(class="footer mt-auto px-2 py-3")
+            div(class="container-fluid")
+                div(class='row align-items-start justify-content-evenly')
+                    div(class='col align-self-start px-0')
+                        a(href='https://twitter.com/TheCardRoomNFT')
+                            img(style='padding-right: 10px;' src='/images/twitter-icon.png' onmouseover='this.src=\'/images/twitter-icon-hover.png\'' onmouseout='this.src=\'/images/twitter-icon.png\'')
+                        a(href='https://discord.gg/WETf8Y9wF3')
+                            img(style='padding-right: 10px;' src='/images/discord-icon.png' onmouseover='this.src=\'/images/discord-icon-hover.png\'' onmouseout='this.src=\'/images/discord-icon.png\'')
+                        a(href='https://medium.com/@TheCardRoomNFT')
+                            img(style='padding-right: 10px;' src='/images/medium-icon.png' onmouseover='this.src=\'/images/medium-icon-hover.png\'' onmouseout='this.src=\'/images/medium-icon.png\'')
+                        a(href='https://www.instagram.com/thecardroomnft')
+                            img(src='/images/instagram-icon.png'  onmouseover='this.src=\'/images/instagram-icon-hover.png\'' onmouseout='this.src=\'/images/instagram-icon.png\'')
+                    div(class='col align-self-end px-2')
+                        p(class='text-end') 
+                            a(href='/terms') Terms & Conditions
+
+        script(src='/dist/tcr-bundle.js' type='module')
+        script(src='/bootstrap/js/bootstrap.bundle.min.js')
