@@ -8,20 +8,35 @@ block content
                 p 
                     | Before beginning, please read the 
                     a(href='/mutate_faq') Mutate FAQ
-                    | .
+                    | .  
+                    // #{data.requests_count}
             div(class='col align-self-end text-end')
-                button(type='button' class='btn btn-primary' id='button-wallet-connect' onclick='this.value=\'testing...\';connect_to_wallet(this)') Connect to Nami
+                div(class='dropdown')
+                    button(class='btn btn-primary dropdown-toggle' type='button' id='button-wallet-connect' data-bs-toggle='dropdown' aria-expanded='false')
+                        | Connect
+                    ul(class='dropdown-menu' aria-labelledby='button-wallet-connect')
+                        li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Nami\');') Nami
+                        li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Eternl\');') Eternl
+                        li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Flint\');') Flint
         div(class='row align-items-start justify-content-evenly')
             div(class='col align-self-start px-0')
                 form(method='POST' action='')
                     div(class='form-group py-1')
-                        select(class='form-select' name='normie_asset_id' id='normie-select')
+                        select(class='form-select' name='normie_asset_id' id='normie-select' required minLength='1')
                             option(value='') Select a Normie
                     div(class='form-group py-1')
-                        select(class='form-select' name='mutation_asset_id' id='mutation-select')
+                        select(class='form-select' name='mutation_asset_id' id='mutation-select' required minLength='1')
                             option(value='') Select a Mutation
                     input(type='hidden' name='from' value='' id='from')
+
+                    if error
+                        p(style='color: red;') Error: !{error}
+
                     div(class='form-group py-1')
                         button(type='submit' class='btn btn-primary' id='submit-button' disabled) Mutate!
             div(class='col align-self-end text-end')
-                p
+        div(class='row align-items-start justify-content-evenly')
+            if success 
+                p(class='pt-3') 
+                    | Request received.  Please send 12 ADA to #{data.mint_address}.  Your request will be batched 
+                    | with other requests and returned by Monday.

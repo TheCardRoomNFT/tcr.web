@@ -1,0 +1,15 @@
+| {
+| "requests" : [
+- var i = 0;
+each request in requests
+    - i++;
+    | {
+    |    "date": "#{request.date}",
+    |    "from": "#{request.from}",
+    |    "normie_asset_id": "#{request.normie_asset_id}",
+    |    "mutation_asset_id": "#{request.mutation_asset_id}"
+    | }
+    if (i < requests.length)
+        | ,
+| ]
+| }
