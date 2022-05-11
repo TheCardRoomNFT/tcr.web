@@ -81,5 +81,8 @@ router.get('/terms', function(req, res, next) {
   res.render('terms', { title: 'The Card Room | Terms' });
 });
 
+/* GET requests page. */
+// not needed anymore.  handled by the node software
+// router.get('/requests', mutate_controller.requests_create_get);
 
 module.exports = router;

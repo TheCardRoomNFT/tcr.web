@@ -6,20 +6,33 @@ import Loader from "./loader";
 let Buffer = require('buffer/').Buffer
 import AssetFingerprint from '@emurgo/cip14-js';
 
-function is_installed() {
+function getWallet(name) {
     if (!window.cardano) {
-        return false;
+        return null;
     }
 
-    if (!window.cardano.nami) {
+    if (name == 'Nami') {
+        return window.cardano.nami;
+    } else if (name == 'Eternl') {
+        return window.cardano.eternl;
+    } else if (name == 'Flint') {
+        return window.cardano.flint;
+    }
+
+    return null;
+}
+
+function isInstalled(name) {
+    if (!getWallet(name)) {
         return false;
     }
 
     return true;
 }
 
-async function is_enabled() {
-    return window.cardano.nami.isEnabled();
+async function isEnabled(name) {
+    const wallet = getWallet(name);
+    return wallet.isEnabled();
 }
 
 async function get_cardano_serialization_lib() {
@@ -128,32 +141,33 @@ function add_option(element, name, value) {
     element.appendChild(opt);
 }
 
-window.connect_to_wallet = async function connect_to_wallet(button) {
-    if (!is_installed()) {
-        console.log('Nami not installed');
+window.connect_to_wallet = async function connect_to_wallet(button, name) {
+    if (!isInstalled(name)) {
+        console.log(name + ' not installed');
         return false;
     }
 
-    console.log('Connect to wallet');
+    var msel = document.getElementById('mutation-select');
+    remove_all_options(msel);
+    add_option(msel, 'Select a Mutation', '');
+
+    var nsel = document.getElementById('normie-select');
+    remove_all_options(nsel);
+    add_option(nsel, 'Select a Normie', '');
+
+    const wallet = getWallet(name);
     const slib = await get_cardano_serialization_lib();
-    window.cardano.nami.enable().then( nami_api => {
-        button.innerText='Connected';
-        console.log(window.cardano.nami);
-        console.log(nami_api);
+    wallet.enable().then( nami_api => {
+        button.innerText = name;
+        window.localStorage.setItem('tcr-enabled-wallet', name);
         return update_wallet_contents(nami_api, slib);
     }).then( assets => {
         // Build a list of mutations
-        let msel = document.getElementById('mutation-select');
-        remove_all_options(msel);
-        add_option(msel, 'Select a Mutation', '0');
         for (const mutation of assets.mutations) {       
             add_option(msel, mutation.name, mutation.fingerprint);
         }
 
         // Build a list of normies
-        let nsel = document.getElementById('normie-select');
-        remove_all_options(nsel);
-        add_option(nsel, 'Select a Normie', '0');
         for (const normie of assets.normies) {
             add_option(nsel, normie.name, normie.fingerprint);
         }
@@ -165,7 +179,7 @@ window.connect_to_wallet = async function connect_to_wallet(button) {
     }).catch( error => {
         console.error(error);
         console.error(`Request Denied`);
-        button.innerText='Connect to Nami';
+        button.innerText='Connect';
     });
 }
 
@@ -174,16 +188,12 @@ window.check_wallet_connection = async function check_wallet_connection(button) 
         return;
     }
 
-    if (!is_installed()) {
-        button.innerText = 'N/A';
-        return;
+    var enabled_wallet = window.localStorage.getItem('tcr-enabled-wallet');
+    var wallet = getWallet(enabled_wallet);
+    if (wallet != null) {
+        var enabled = await isEnabled(enabled_wallet);
+        if (enabled) {
+            connect_to_wallet(button, enabled_wallet);
+        }
     }
-
-    var enabled = await is_enabled();
-    if (!enabled) {
-        button.innerText = 'Connect to Nami';
-        return;
-    }
-
-    connect_to_wallet(button);
 }
