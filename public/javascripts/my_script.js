@@ -5,6 +5,7 @@
 import Loader from "./loader";
 let Buffer = require('buffer/').Buffer
 import AssetFingerprint from '@emurgo/cip14-js';
+var normies = require('./normies')
 
 function getWallet(name) {
     if (!window.cardano) {
@@ -110,10 +111,12 @@ async function update_wallet_contents(nami_api, slib) {
                         fingerprint: fingerprint_bech32
                     };
 
-                    if (policy_id_hex === '3d6d8a031b309c0181be1c618a9762fee47bf1e28646bc7dab63ecdb') {
+                    if (policy_id_hex === '7135025a3c23035cdcff4ef8ae3849248afd369466ea1abef61a4157') {
                         mutation_assets.push(asset_object);
                     } else {
-                        normie_assets.push(asset_object);
+                        if (policy_id_hex in normies.whitelist) {
+                            normie_assets.push(asset_object);
+                        }
                     }
                 }
             }
