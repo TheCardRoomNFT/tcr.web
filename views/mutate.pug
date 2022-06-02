@@ -1,15 +1,10 @@
 extends layout
 
 block content
-    h2 MUTATE
-    div(class="container-fluid py-2")
+    div(class='container-fluid py-2')
         div(class='row align-items-start justify-content-evenly')
             div(class='col align-self-start px-0')
-                p 
-                    | Before beginning, please read the 
-                    a(href='/mutate_faq') Mutate FAQ
-                    | .  
-                    // #{data.requests_count}
+                h2 MUTATE
             div(class='col align-self-end text-end')
                 div(class='dropdown')
                     button(class='btn btn-primary dropdown-toggle' type='button' id='button-wallet-connect' data-bs-toggle='dropdown' aria-expanded='false')
@@ -18,6 +13,19 @@ block content
                         li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Nami\');') Nami
                         li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Eternl\');') Eternl
                         li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Flint\');') Flint
+
+    img(src='/images/mutation_example.png' height='200' alt='Normie + Mutation = Mutant')
+    p 
+        | Normie + Mutation = Mutant
+
+    div(class="container-fluid py-2")
+        div(class='row align-items-start justify-content-evenly')
+            div(class='col align-self-start px-0')
+                p 
+                    | Before beginning, please read the 
+                    a(href='/mutate_faq') Mutate FAQ
+                    | .
+            div(class='col align-self-end text-end')
         div(class='row align-items-start justify-content-evenly')
             div(class='col align-self-start px-0')
                 form(method='POST' action='')
@@ -39,4 +47,4 @@ block content
             if success 
                 p(class='pt-3') 
                     | Request received.  Please send 12 ADA to #{data.mint_address}.  Your request will be batched 
-                    | with other requests and returned by Monday.
+                    | with other requests and returned within a few days.

@@ -58,7 +58,8 @@ exports.mutate_create_post = [
                 var new_request = new MutateRequest({
                     normie_asset_id: req.body.normie_asset_id,
                     mutation_asset_id: req.body.mutation_asset_id,
-                    from: req.body.from
+                    from: req.body.from,
+                    processed: false
                 });
                 return new_request.save();
             }
