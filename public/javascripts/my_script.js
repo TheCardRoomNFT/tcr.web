@@ -113,10 +113,11 @@ async function update_wallet_contents(nami_api, slib) {
 
                     if (policy_id_hex === '7135025a3c23035cdcff4ef8ae3849248afd369466ea1abef61a4157') {
                         mutation_assets.push(asset_object);
-                    } else {
-                        if (policy_id_hex in normies.whitelist) {
-                            normie_assets.push(asset_object);
-                        }
+                    } 
+
+                    // mutations can also be mutated
+                    if (policy_id_hex in normies.whitelist) {
+                        normie_assets.push(asset_object);
                     }
                 }
             }
