@@ -25,6 +25,7 @@ module.exports = {
         "af2c745c3b62bd824d46966aca6794d84e20d969763982a48a66a5d8": "Nerdmas",
         "92fd944c8d8f0244b1456bcf8c2b845983a4be346cd3a2a77170b7c2": "NeoTribes Cvlt of Kali",
         "49b4109aa40548dd55dd106ce58003c9601da016992cc276ed880cd0": "Radioactive Crocs Club",
+        "fa1dd64baf1b674089ed1281c98e65117ea7dffb7bdf5b8c02b5c140": "RastaPunks",
         "d5e6bf0500378d4f0da4e8dde6becec7621cd8cbf5cbb9b87013d4cc": "Spacebudz",
         "2b9fb283d8116489f4a494e76c75efe0d9992aaef6c65eaf9b374298": "TCR King Charles",
         "7135025a3c23035cdcff4ef8ae3849248afd369466ea1abef61a4157": "TCR Mutation",
