@@ -13,6 +13,7 @@
     ssh -i key user@ip
     /home/nodejs/workspace/tcr.web
     git pull
+    npm run build
     su - nodejs
     pm2 restart www
     pm2 log
