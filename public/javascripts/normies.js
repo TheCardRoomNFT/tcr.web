@@ -32,6 +32,8 @@ module.exports = {
         "b6c2369ab4f5155f868b6dc885772829bf292ef89e0c707d19f1a312": "Nerds and Virgins",
         "af2c745c3b62bd824d46966aca6794d84e20d969763982a48a66a5d8": "Nerdmas",
         "92fd944c8d8f0244b1456bcf8c2b845983a4be346cd3a2a77170b7c2": "NeoTribes Cvlt of Kali",
+        "a616aab3b18eb855b4292246bd58f9e131d7c8c25d1d1d7c88b666c4": "Pendulum - ORDER",
+        "ee66460fc89a8cd752b2b9e157f08d68118e46cbdbd6970fb69f704d": "Pendulum - OUTCASTS",
         "49b4109aa40548dd55dd106ce58003c9601da016992cc276ed880cd0": "Radioactive Crocs Club",
         "fa1dd64baf1b674089ed1281c98e65117ea7dffb7bdf5b8c02b5c140": "RastaPunks",
         "d5e6bf0500378d4f0da4e8dde6becec7621cd8cbf5cbb9b87013d4cc": "Spacebudz",
