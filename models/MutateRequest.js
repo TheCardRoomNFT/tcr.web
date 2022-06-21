@@ -1,6 +1,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+const addresses = require('../addresses');
 
 var MutateRequestSchema = new Schema({
     date: {type: Date, default: Date.now()},
@@ -10,4 +11,4 @@ var MutateRequestSchema = new Schema({
     processed: {type: Boolean, required: true}
 });
 
-module.exports = mongoose.model('mutate_request', MutateRequestSchema);
+module.exports = mongoose.model(addresses.mutate_request_collection, MutateRequestSchema);

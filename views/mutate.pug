@@ -1,6 +1,7 @@
 extends layout
 
 block content
+    script(src='https://www.google.com/recaptcha/api.js?render=6Lc5C4AgAAAAAMYR3Q2xYdMERDJlrOHNml7QO3mA')
     div(class='container-fluid py-2')
         div(class='row align-items-start justify-content-evenly')
             div(class='col align-self-start px-0')
@@ -9,7 +10,7 @@ block content
                 div(class='dropdown')
                     button(class='btn btn-primary dropdown-toggle' type='button' id='button-wallet-connect' data-bs-toggle='dropdown' aria-expanded='false')
                         | Connect
-                    ul(class='dropdown-menu' aria-labelledby='button-wallet-connect')
+                    ul(class='dropdown-menu' aria-labelledby='button-wallet-connect' id='wallet-dropdown')
                         li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Nami\');') Nami
                         li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Eternl\');') Eternl
                         li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Flint\');') Flint
@@ -28,23 +29,23 @@ block content
             div(class='col align-self-end text-end')
         div(class='row align-items-start justify-content-evenly')
             div(class='col align-self-start px-0')
-                form(method='POST' action='')
+                form(method='POST' action='' id='mutate-request-form')
                     div(class='form-group py-1')
-                        select(class='form-select' name='normie_asset_id' id='normie-select' required minLength='1')
+                        select(class='form-select' name='normie_asset_id' id='normie-select' required minLength='30')
                             option(value='') Select a Normie
                     div(class='form-group py-1')
-                        select(class='form-select' name='mutation_asset_id' id='mutation-select' required minLength='1')
+                        select(class='form-select' name='mutation_asset_id' id='mutation-select' required minLength='30')
                             option(value='') Select a Mutation
-                    input(type='hidden' name='from' value='' id='from')
+                    input(type='hidden' name='from' value='' id='from' required minLength='20')
+                    input(type='hidden' name='token' value='' id='grecaptcha-token' required)
 
-                    if error
-                        p(style='color: red;') Error: !{error}
+                    p(style='color: red; display: none;' id='error-response-message') Error:
 
                     div(class='form-group py-1')
-                        button(type='submit' class='btn btn-primary' id='submit-button' disabled) Mutate!
+                        button(class='btn btn-primary' type='button' id='submit-button') Mutate!
+            script
+                include /javascripts/recaptcha.js    
             div(class='col align-self-end text-end')
         div(class='row align-items-start justify-content-evenly')
-            if success 
-                p(class='pt-3') 
-                    | Request received.  Please send 12 ADA to #{data.mint_address}.  Your request will be batched 
-                    | with other requests and returned within a few days.
+            p(class='pt-3' style='display:none;' id='success-response-message') Success:
+        div(onload='check_wallet_connection(document.getElementById(\'button-wallet-connect\'))')
