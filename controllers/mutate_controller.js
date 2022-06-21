@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
-
 var async = require('async');
+const fetch = require('isomorphic-fetch');
 var MutateRequest = require('../models/MutateRequest');
 const addresses = require('../addresses');
 
@@ -33,27 +33,55 @@ exports.mutate_create_get = function(req, res, next) {
     });
 };
 
-// Handle create on POST.
 exports.mutate_create_post = [
-    // Validate and sanitize fields.
-    body('from', 'From required').trim().isLength({min: 1}).escape(),
-    body('normie_asset_id', 'Normie asset id required.').trim().isLength({ min: 1 }).escape(),
-    body('mutation_asset_id', 'Mutation asset id required.').trim().isLength({ min: 1 }).escape(),
-    
-    // Process request after validation and sanitization.
-    (req, res, next) => {
-        const errors = validationResult(req);
-        console.log('from: ' + req.body.from);
+    // Validate & Sanitize
+    body('token', 'Token required').isLength({min: 1}),
+    body('wallet', 'Wallet required').trim().isLength({min: 4}).escape(),
+    body('from', 'From required').trim().isLength({min: 20}).escape(),
+    body('normie_asset_id', 'Normie asset id required.').trim().isLength({ min: 30 }).escape(),
+    body('mutation_asset_id', 'Mutation asset id required.').trim().isLength({ min: 30 }).escape(),
 
-        if (!errors.isEmpty()) {
-            res.render('mutate', { title: 'The Card Room | Mutate Validate Error', error: errors.array(), data: {requests_count: 0} });
-            return;
+    // Process
+    (req, res) => {
+        const validation_errors = validationResult(req);
+        if (!validation_errors.isEmpty()) {
+            return res.json({success: false, address: '', error: validation_errors});
         }
-        
-        MutateRequest.find({mutation_asset_id: req.body.mutation_asset_id}).then(docs => {
+
+        if (!req.body.normie_asset_id.startsWith('asset')) {
+            return res.json({success: false, address: '', error: 'invalid asset id'});
+        }
+
+        if (!req.body.mutation_asset_id.startsWith('asset')) {
+            return res.json({success: false, address: '', error: 'invalid asset id'});
+        }
+
+        if (!req.body.from.startsWith('addr')) {
+            return res.json({success: false, address: '', error: 'invalid address'});
+        }
+
+        const secret_key = addresses.recaptcha;
+        const token = req.body.token;
+        const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret_key}&response=${token}`;
+
+        fetch(url, {
+            method: 'post'
+        }).then(response => {
+            return response.json();
+        }).then(gresponse => {
+            if (!gresponse.success || gresponse.score < 0.88) {
+                console.log(gresponse)
+                throw 'Failed captcha, reload page';
+            }
+
+            if (gresponse.action != 'mutate') {
+                throw 'Invalid captcha action';
+            }
+
+            return MutateRequest.find({mutation_asset_id: req.body.mutation_asset_id});            
+        }).then(docs => {
             if (docs.length >= 1) {
-                console.log('docs.length > 1');
-                throw 'Mutation already requested';
+                throw 'Mutation already requested, wait 45 days from last use.';
             } else {
                 var new_request = new MutateRequest({
                     normie_asset_id: req.body.normie_asset_id,
@@ -64,20 +92,13 @@ exports.mutate_create_post = [
                 return new_request.save();
             }
         }).then(result => {
-            console.log('Success');
-            res.render('mutate', { 
-                title: 'The Card Room | Mutate Received', 
-                success: 'Request received', 
-                data: {requests_count: 0, mint_address: addresses.mutation_mint}
-            });
-        }).catch( error_msg => {
-            console.log('Error');
-            console.error(error_msg);
-            res.render('mutate', { 
-                title: 'The Card Room | Mutate Error', 
-                error: error_msg, 
-                data: {requests_count: 0, mint_address: addresses.mutation_mint} 
-            });
+            if (!result) {
+                return res.json({success: false, error: 'Failed to save request'})
+            }
+
+            return res.json({success: true, address: addresses.mutation_mint, error: null})
+        }).catch(error => {
+            return res.json({success: false, address: '', error: error});
         });
     }
 ];
