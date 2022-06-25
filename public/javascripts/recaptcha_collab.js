@@ -14,7 +14,11 @@ function show_result(response) {
         document.getElementById('subject').value = '';
         document.getElementById('message').value = '';
     } else {
-        error_para.innerHTML = 'Error: ' + response.error.errors[0].msg;
+        if ('errors' in response.error) {
+            error_para.innerHTML = 'Error: ' + response.error.errors[0].msg;
+        } else {
+            error_para.innerHTML = 'Error processing request';
+        }
         success_para.style.display = 'none';
         error_para.style.display = 'block';
     }

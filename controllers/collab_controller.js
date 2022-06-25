@@ -58,7 +58,7 @@ exports.collab_create_post = [
                 throw 'Failed to save request';
             }
 
-            return res.json({success: true, error: null})
+            return res.json({success: true, error: {errors: [{msg: 'Success'}]}});
         }).catch(error => {
             return res.json({success: false, error: {errors: [{msg: error}]}});
         });

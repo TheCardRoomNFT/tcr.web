@@ -43,6 +43,7 @@ module.exports = {
         "d5e6bf0500378d4f0da4e8dde6becec7621cd8cbf5cbb9b87013d4cc": "Spacebudz",
         "2b9fb283d8116489f4a494e76c75efe0d9992aaef6c65eaf9b374298": "TCR King Charles",
         "7135025a3c23035cdcff4ef8ae3849248afd369466ea1abef61a4157": "TCR Mutation",
+        "c71279e0954dfc999a8f5cf7c703a0b31c52d26518012eebf3a9fd17": "Team Thulu",
         "0e14267a8020229adc0184dd25fa3174c3f7d6caadcb4425c70e7c04": "unsigned_algorithms",
         "96580bbc4fe27ac0d127db3f8a0dc698c58d303d8cae870f5771f336": "Zombie Chains"
     }
