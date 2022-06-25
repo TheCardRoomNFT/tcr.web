@@ -1,6 +1,7 @@
 extends layout
 
 block content
+    script(src='https://www.google.com/recaptcha/api.js?render=6Lc5C4AgAAAAAMYR3Q2xYdMERDJlrOHNml7QO3mA')
     div(class="container-fluid")
         div(class='row align-items-start justify-content-evenly')
             div(class='col align-self-start px-0')
@@ -16,12 +17,17 @@ block content
                 h4(class='pt-2') Request Form:
                 form(method='POST' action='')
                     div(class='form-group py-1')
-                        input(class="form-control background-black" style='color: white; background: black;' type='text', placeholder='Your name*' name='name' required autofocus)
+                        input(class="form-control background-black" style='color: white; background: black;' type='text', placeholder='Your name*' name='name' id='name' required minLength='2' autofocus)
                     div(class='form-group py-1')
-                        input(class="form-control background-black" style='color: white; background: black;' type='email', placeholder='Your email address*' name='email' required)
+                        input(class="form-control background-black" style='color: white; background: black;' type='email', placeholder='Your email address*' name='email' id='email' minLength='6' required)
                     div(class='form-group py-1')
-                        input(class="form-control background-black" style='color: white; background: black;' type='text', placeholder='Subject*' name='subject' required)
+                        input(class="form-control background-black" style='color: white; background: black;' type='text', placeholder='Subject*' name='subject' id='subject' minLength='2' required)
                     div(class='form-group py-1')
-                        textarea(class="form-control background-black" style='color: white; background: black;' rows='7' placeholder='Message*' name='message' required)
+                        textarea(class="form-control background-black" style='color: white; background: black;' rows='7' placeholder='Message*' name='message' id='message' minLenth='10' required)
                     div(class='form-group py-1')
-                        button(type='submit' class='btn btn-primary' id='submit-button') Send
+                        input(type='hidden' name='token' value='' id='grecaptcha-token' required)
+                        p(style='color: red; display:none;' id='error-response-message') Error:
+                        p(style='display:none;' id='success-response-message') Success:
+                        button(type='button' class='btn btn-primary' id='submit-button') Send
+                script
+                    include /javascripts/recaptcha_collab.js    
