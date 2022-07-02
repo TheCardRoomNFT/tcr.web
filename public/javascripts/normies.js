@@ -18,6 +18,7 @@ module.exports = {
         "0db1c36331b3b789f31d596274e210e0649ae0d4e86bb9a7c92a7482": "Cheeky Unts - Season One",
         "571172ef85da56912bfe4d198e7b54d1404b0da5301bcdd2014d1d64": "Cheeky Unts - Season Two",
         "2806f0efeb7ebfc5b55a1adcb94edf104c36fe3f27ad6f5a6de2d998": "Cheeky Unts - Wicked Unts",
+        "c56d4cceb8a8550534968e1bf165137ca41e908d2d780cc1402079bd": "Chilled Kongs",
         "40fa2aa67258b4ce7b5782f74831d46a84c59a0ff0c28262fab21728": "Clay Nation",
         "106e44f8ce68e28500545dcb68b407331a9d4b6088f11f672c6d07db": "Dead Pop Hell - Am I Evil",
         "1ec85dcee27f2d90ec1f9a1e4ce74a667dc9be8b184463223f9c9601": "DeadPXLZ",
