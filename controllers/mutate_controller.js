@@ -78,10 +78,12 @@ exports.mutate_create_post = [
                 throw 'Invalid captcha action';
             }
 
-            return MutateRequest.find({mutation_asset_id: req.body.mutation_asset_id});            
+            var cooldown_date = new Date();
+            cooldown_date.setDate(cooldown_date.getDate() - 45);
+            return MutateRequest.find({mutation_asset_id: req.body.mutation_asset_id, date: {"$gte": cooldown_date}});
         }).then(docs => {
             if (docs.length >= 1) {
-                throw 'Mutation already requested, wait 45 days from last use.';
+                throw 'Mutation already requested.  Wait for 45 day cooldown to finish. Last requested: ' + docs[0].date;
             } else {
                 var new_request = new MutateRequest({
                     normie_asset_id: req.body.normie_asset_id,
