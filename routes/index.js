@@ -70,6 +70,11 @@ router.get('/community', function(req, res, next) {
   res.render('community', { title: 'The Card Room | Community' });
 });
 
+/* GET clubgg page. */
+router.get('/clubgg', function(req, res, next) {
+  res.render('clubgg', { title: 'The Card Room | ClubGG' });
+});
+
 /* GET collab page. */
 router.get('/collab', collab_controller.collab_create_get);
 
