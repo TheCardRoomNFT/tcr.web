@@ -15,6 +15,8 @@ function show_result(response) {
 
     document.getElementById('normie-select').value = '';
     document.getElementById('mutation-select').value = '';
+    document.getElementById('algorithm-select').value = '';
+    document.getElementById('accept-tc').checked = false;
 
     // Update it again
     grecaptcha.ready(function() {
@@ -28,9 +30,18 @@ function handle_click() {
     return function() {
         const normie = document.getElementById('normie-select').value;
         const mutation = document.getElementById('mutation-select').value;
+        const algorithm = document.getElementById('algorithm-select').value;
         const from = document.getElementById('from').value;
+        const accept = document.getElementById('accept-tc');
         const wallet = document.getElementById('button-wallet-connect').innerText
         const token = document.getElementById('grecaptcha-token').value;
+
+        if (!accept || accept.checked === false) {
+            error_para = document.getElementById('error-response-message');
+            error_para.innerHTML = 'Please accept Terms & Conditions';
+            error_para.style.display = 'block';
+            return;
+        }
 
         if (!wallet || wallet === 'Connect') {
             error_para = document.getElementById('error-response-message');
@@ -53,6 +64,13 @@ function handle_click() {
             return;
         }
 
+        if (!algorithm || (algorithm !== 'VQGAN+CLIP' && algorithm !== 'StableDiffusion')) {
+            error_para = document.getElementById('error-response-message');
+            error_para.innerHTML = 'Error: Invalid algorithm';
+            error_para.style.display = 'block';
+            return;
+        }
+
         if (!from || !from.startsWith('addr')) {
             error_para = document.getElementById('error-response-message');
             error_para.innerHTML = 'Error: Invalid address';
@@ -63,8 +81,10 @@ function handle_click() {
         var data = {
             normie_asset_id: normie,
             mutation_asset_id: mutation,
+            algorithm: algorithm,
             from: from,
             wallet: wallet,
+            accept:accept.checked,
             token: token
         };
 
@@ -98,7 +118,6 @@ setInterval(function () {
     grecaptcha.ready(function () {
         grecaptcha.execute('6Lc5C4AgAAAAAMYR3Q2xYdMERDJlrOHNml7QO3mA', { action: 'mutate' }).then(function (token) {
             document.getElementById('grecaptcha-token').value = token;
-            console.log('updated token');
         });
     });
 }, 90 * 1000);

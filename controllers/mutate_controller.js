@@ -12,8 +12,10 @@ exports.requests_create_get = function(req, res, next) {
           .exec(callback)
         },
     }, function(err, results) {
-        if (err) { return next(err); } // Error in API usage.
-        // Successful, so render.
+        if (err) {
+            return next(err);
+        }
+
         res.render('requests', { requests: results.mutate_requests } );
     });
 };
@@ -36,16 +38,22 @@ exports.mutate_create_get = function(req, res, next) {
 exports.mutate_create_post = [
     // Validate & Sanitize
     body('token', 'Token required').isLength({min: 1}),
+    body('accept', 'Accept required').isLength({min: 1}),
     body('wallet', 'Wallet required').trim().isLength({min: 4}).escape(),
     body('from', 'From required').trim().isLength({min: 20}).escape(),
     body('normie_asset_id', 'Normie asset id required.').trim().isLength({ min: 30 }).escape(),
     body('mutation_asset_id', 'Mutation asset id required.').trim().isLength({ min: 30 }).escape(),
+    body('algorithm', 'Algorithm required.').trim().isLength({ min: 10 }).escape(),
 
     // Process
     (req, res) => {
         const validation_errors = validationResult(req);
         if (!validation_errors.isEmpty()) {
             return res.json({success: false, address: '', error: validation_errors});
+        }
+
+        if (!req.body.accept) {
+            return res.json({success: false, address: '', error: 'accept terms & conditions'});
         }
 
         if (!req.body.normie_asset_id.startsWith('asset')) {
@@ -60,6 +68,10 @@ exports.mutate_create_post = [
             return res.json({success: false, address: '', error: 'invalid address'});
         }
 
+        if (req.body.algorithm !== 'VQGAN+CLIP' && req.body.algorithm !== 'StableDiffusion') {
+            return res.json({success: false, address: '', error: 'invalid algorithm'});
+        }
+
         const secret_key = addresses.recaptcha;
         const token = req.body.token;
         const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret_key}&response=${token}`;
@@ -70,7 +82,6 @@ exports.mutate_create_post = [
             return response.json();
         }).then(gresponse => {
             if (!gresponse.success || gresponse.score < 0.88) {
-                console.log(gresponse)
                 throw 'Failed captcha, reload page';
             }
 
@@ -88,9 +99,11 @@ exports.mutate_create_post = [
                 var new_request = new MutateRequest({
                     normie_asset_id: req.body.normie_asset_id,
                     mutation_asset_id: req.body.mutation_asset_id,
+                    algorithm: req.body.algorithm,
                     from: req.body.from,
                     processed: false
                 });
+
                 return new_request.save();
             }
         }).then(result => {
