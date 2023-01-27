@@ -15,18 +15,44 @@ block content
                         li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Eternl\');') Eternl
                         li(class='dropdown-item' style='cursor: default;' onclick='connect_to_wallet(document.getElementById(\'button-wallet-connect\'), \'Flint\');') Flint
 
-    img(src='/images/mutation_example.png' height='200' alt='Normie + Mutation = Mutant')
-    p 
-        | Normie + Mutation = Mutant
+    table(align='center')
+        tr
+            td
+                img(src='/images/normie01.png' height='200' alt='normie')
+            td
+                p(class='display-1' style='text-align:center; color:black;') +
+            td
+                img(src='/images/mutation08.png' height='200' alt='mutation')
+            td
+                p(class='display-1' style='text-align:center; color:black;') =
+            td
+                img(src='/images/mutant01.jpeg' height='200' alt='mutant')
+        tr 
+            td
+                p(style='text-align:center;') Normie
+            td
+                p(style='text-align:center;')
+            td
+                p(style='text-align:center;') Mutation
+            td
+                p(style='text-align:center;')
+            td
+                p(style='text-align:center;') Mutant
 
     div(class="container-fluid py-2")
         div(class='row align-items-start justify-content-evenly')
             div(class='col align-self-start px-0')
                 p 
-                    | Before beginning, please read the 
-                    a(href='/mutate_faq') Mutate FAQ
-                    | .
-            div(class='col align-self-end text-end')
+                    | Mutations are extremely powerful and unpredictable.  The result may be a beautiful work of art
+                    | or an abomination of nature.  Before beginning, please read the 
+                    a(href='/mutate_faq') Mutate FAQ 
+                    | and 
+                    a(href='https://www.jpg.store/collection/thecardroom-mutants') browse mutants 
+                    | that have already been created on jpg.store to gain a better understanding of what is coming 
+                    | out of THE LAB.
+                p 
+                    | If you have a normie you want to mutate but it's not showing up, contact THE LAB to add it.
+                    
         div(class='row align-items-start justify-content-evenly')
             div(class='col align-self-start px-0')
                 form(method='POST' action='' id='mutate-request-form')
@@ -36,6 +62,16 @@ block content
                     div(class='form-group py-1')
                         select(class='form-select' name='mutation_asset_id' id='mutation-select' required minLength='30')
                             option(value='') Select a Mutation
+                    div(class='form-group py-1')
+                        select(class='form-select' name='algorithm' id='algorithm-select' required minLength='10')
+                            option(value='') Select Mutation Algorithm
+                            option(value='VQGAN+CLIP') VQGAN+CLIP
+                            option(value='StableDiffusion') Stable Diffusion
+                    div(class='form-group py-1' style='color:white;')
+                        input(type='checkbox' id='accept-tc', name='accept-tc')
+                        label(for='accept-tc') 
+                            | Accept 
+                            a(href='/terms') Terms & Conditions
                     input(type='hidden' name='from' value='' id='from' required minLength='20')
                     input(type='hidden' name='token' value='' id='grecaptcha-token' required)
 

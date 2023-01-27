@@ -57,6 +57,7 @@ module.exports = {
         "004e10028cc11fb84905ff051e4dcadb5c6e6c791181a333333988ad": "TCR Mutants",
         "c71279e0954dfc999a8f5cf7c703a0b31c52d26518012eebf3a9fd17": "Team Thulu",
         "0e14267a8020229adc0184dd25fa3174c3f7d6caadcb4425c70e7c04": "unsigned_algorithms",
+        "fb1c07755c38c831099874a209596aac0f938e73be9f92753eda1e38": "WeebleWibs Season 1",
         "96580bbc4fe27ac0d127db3f8a0dc698c58d303d8cae870f5771f336": "Zombie Chains"
     }
 };
