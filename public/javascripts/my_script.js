@@ -147,7 +147,7 @@ function add_option(element, name, value) {
 
 window.connect_to_wallet = async function connect_to_wallet(button, name) {
     if (!isInstalled(name)) {
-        console.log(name + ' not installed');
+        console.error(name + ' not installed');
         return false;
     }
 
@@ -194,10 +194,155 @@ window.check_wallet_connection = async function check_wallet_connection(button) 
 
     var enabled_wallet = window.localStorage.getItem('tcr-enabled-wallet');
     var wallet = getWallet(enabled_wallet);
-    if (wallet != null) {
+    if (wallet !== null) {
         var enabled = await isEnabled(enabled_wallet);
         if (enabled) {
             connect_to_wallet(button, enabled_wallet);
         }
+    }
+}
+
+function set_progress(value) {
+    var progress = document.getElementById('request-progress')
+    if (progress !== null) {
+        console.log('progress: ' + value + '%')
+        progress.ariaValueNow = value;
+        progress.style.width = '' + value + '%';
+    }
+}
+
+const fromHex = (hex) => Buffer.from(hex, "hex");
+const toHex = (bytes) => Buffer.from(bytes).toString("hex");
+
+window.send_payment = async function send_payment(address, amount) {
+    var enabled_wallet = window.localStorage.getItem('tcr-enabled-wallet');
+    if (!enabled_wallet) {
+        return null;
+    }
+
+    var wallet_obj = getWallet(enabled_wallet);
+    if (!wallet_obj) {
+        return null;
+    }
+
+    if (!wallet_obj.isEnabled()) {
+        return null;
+    }
+
+    var wallet = await wallet_obj.enable();
+
+    if (wallet.getNetworkId === undefined) {
+        console.error("You did not connect your wallet!");
+        return null;
+    }
+
+    const mainnet = 1
+    const wallet_network = await wallet.getNetworkId();
+    if (wallet_network !== mainnet) {
+        console.error("Your wallet's network mode does not match the page network mode!", wallet_network, network_mode);
+        return null;
+    }
+
+    // TODO: Update this dynamically at run-time from Koios (https://api.koios.rest/#get-/epoch_params)
+    const protocolParameters = {
+        linearFee: {
+            minFeeA: "44",
+            minFeeB: "155381",
+        },
+        minUtxo: "1000000",
+        poolDeposit: "500000000",
+        keyDeposit: "2000000",
+        maxValSize: "5000",
+        maxTxSize: 16384,
+        costPerWord: "34482"
+    };
+
+    const CSL = await get_cardano_serialization_lib();
+    set_progress(10);
+    var tca = await wallet.getChangeAddress();
+    set_progress(15);
+    var tca_buffer = Buffer.from(tca, "hex");
+    var tca_u8array = Uint8Array.from(tca_buffer);
+    const change_addr = CSL.Address.from_bytes(tca_u8array);
+
+    const txBuilder = CSL.TransactionBuilder.new(
+        CSL.TransactionBuilderConfigBuilder.new()
+            .fee_algo(
+                CSL.LinearFee.new(
+                    CSL.BigNum.from_str(protocolParameters.linearFee.minFeeA),
+                    CSL.BigNum.from_str(protocolParameters.linearFee.minFeeB)
+                )
+            )
+            .pool_deposit(CSL.BigNum.from_str(protocolParameters.poolDeposit))
+            .key_deposit(CSL.BigNum.from_str(protocolParameters.keyDeposit))
+            .coins_per_utxo_word(CSL.BigNum.from_str(protocolParameters.costPerWord))
+            .max_value_size(protocolParameters.maxValSize)
+            .max_tx_size(protocolParameters.maxTxSize)
+            .build()
+    );
+
+    set_progress(20);
+    const payment_addr = CSL.Address.from_bech32(address);
+    let paymentAmt = amount;
+
+    txBuilder.add_output(
+        CSL.TransactionOutputBuilder.new().with_address(payment_addr).next().with_coin(CSL.BigNum.from_str(paymentAmt.toString())).build()
+    );
+
+    const inputs = CSL.TransactionUnspentOutputs.new();
+
+    (await wallet.getUtxos()).map((utxo) => inputs.add(CSL.TransactionUnspentOutput.from_bytes(fromHex(utxo))));
+    set_progress(50);
+    try {
+        txBuilder.add_inputs_from(inputs, CSL.CoinSelectionStrategyCIP2.LargestFirstMultiAsset);
+    } catch (err) {
+        alert("Sorry, we were not able to build a successful transaction at this time. This may be due to your wallet lacking the necessary asset(s) or token fragmentation.");
+        return null;
+    }
+
+    try {
+        txBuilder.add_change_if_needed(change_addr);
+    } catch (err) {
+        txBuilder.add_output(
+            CSL.TransactionOutputBuilder.new().with_address(change_addr).next().with_coin(CSL.BigNum.from_str('1000000')).build()
+        );
+        txBuilder.add_inputs_from(inputs, CSL.CoinSelectionStrategyCIP2.LargestFirstMultiAsset);
+        try {
+            txBuilder.add_change_if_needed(change_addr);
+        } catch (err) {
+            alert("Sorry, we were not able to build a successful transaction at this time.");
+            return null;
+        }
+    }
+
+    set_progress(70);
+    const transactionWitnessSet = CSL.TransactionWitnessSet.new();
+    const txBody = txBuilder.build();
+    const tx = CSL.Transaction.new(
+        txBody,
+        CSL.TransactionWitnessSet.from_bytes(transactionWitnessSet.to_bytes())
+    );
+
+    try {
+        set_progress(80);
+        const txVkeyWitnesses = await wallet.signTx(toHex(tx.to_bytes()), true);
+        const witnesses = CSL.TransactionWitnessSet.from_bytes(fromHex(txVkeyWitnesses));
+        transactionWitnessSet.set_vkeys(witnesses.vkeys());
+
+        const signedTx = CSL.Transaction.new(
+            tx.body(),
+            transactionWitnessSet
+        )
+
+        try {
+            set_progress(90);
+            const txData = await wallet.submitTx(toHex(signedTx.to_bytes()));
+            return `${txData}`;
+        } catch (err) {
+            return null;
+        }
+    } catch (err) {
+        console.log('Cancelled? ', err);
+        return null;
     }
 }
